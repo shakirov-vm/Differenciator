@@ -13,12 +13,15 @@
 // memory allocate error
 // File* error
 
-int main() {
+int main() { 
+
     class Differenciator differ;
+
     differ.LoadBase();
+    printf("\n");
     differ.Differenciate();
-    printf("And now...\n");
+    //printf("And now...\n");
     differ.DumpString();
-   // differ.DumpGraph();
+    //differ.DumpGraph();
     differ.DumpBase();
 }

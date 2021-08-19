@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include <iostream>
+#include <unordered_map>
+#include <iterator>
 
 #ifndef TREE_H_
 #define TREE_H_
@@ -19,9 +21,30 @@ Tree::~Tree()
 	DeleteBranch(root);
 }
 
-
 void Tree::LoadBase()
 {
+
+	our_hash_table functions;
+	functions.insert(std::make_pair("+", PLUS));
+	functions.insert(std::make_pair("-", MINUS));
+	functions.insert(std::make_pair("*", MULT));
+	functions.insert(std::make_pair("/", DIVIDE));
+	functions.insert(std::make_pair("^", POW));
+	functions.insert(std::make_pair("x", VAR));
+	functions.insert(std::make_pair("null", NUL));
+	functions.insert(std::make_pair("cos", COS));
+	functions.insert(std::make_pair("sin", SIN));
+	functions.insert(std::make_pair("log", LOG));
+
+
+	/*our_hash_table::iterator it = functions.begin();
+	while (it != functions.end()) {
+		printf("[%s] - [%d]\n", it->first, it->second);
+		it++;
+	}*/
+
+	//printf("%d - %s\n", functions.find("+")->second, functions.find("+")->first);
+
 	printf("You need load base. Enter name\n");
 	char* base_name = (char*)calloc(100, sizeof(char));
 
@@ -56,10 +79,9 @@ void Tree::LoadBase()
 		while (isspace(*counter)) counter++;
 		counter = strtok(counter, "$");
 
-		size_t len = strlen(counter);
-		for (size_t i = 0; i < len; i++) {
-			node->data[i] = counter[i];
-		}
+		node->status = GetStatus(counter, &functions);
+		if (node->status == BASIC) node->data = atoi(counter);
+
 		counter = counter + strlen(counter) + 1;
 	}
 
@@ -71,7 +93,10 @@ void Tree::LoadBase()
 			while (isspace(*counter)) counter++;
 			counter = strtok(counter, "$");
 
-			node = new Node(node, nullptr, nullptr, counter);
+			node = new Node(node, nullptr, nullptr, (double)NAN, NOSTAT);
+			node->status = GetStatus(counter, &functions);
+			if (node->status == BASIC) node->data = atoi(counter);
+
 			node->parent->left = node;
 
 			counter = counter + strlen(counter) + 1;
@@ -86,7 +111,10 @@ void Tree::LoadBase()
 			node->parent->left = node;
 			node = node->parent;
 
-			node = new Node(node, nullptr, nullptr, counter);
+			node = new Node(node, nullptr, nullptr, (double)NAN, NOSTAT);
+			node->status = GetStatus(counter, &functions);
+			if (node->status == BASIC) node->data = atoi(counter);
+
 			node->parent->right = node;
 
 			counter = counter + strlen(counter) + 1;
@@ -105,20 +133,50 @@ void Tree::LoadBase()
 	root->left = node->left;
 	root->right = node->right;
 	root->data = node->data;
+	root->status = node->status;
 
 	free(base);
 }
 
-Node* CopyBranch(Node* parent, Node* old) {  // Very bad
+size_t GetStatus(char* data, our_hash_table* functions) { // Is it work right?
+
+	our_hash_table::iterator it = functions->begin();
+	while (it != functions->end()) {
+		if (!strcmp(it->first, data)) break;
+		it++;
+	}
+	if (it == functions->end()) {
+		printf("Don't find {%s}\n", data);
+		return BASIC;
+	}
+	else {
+		printf("from my find: {%s} - {%d}\n", it->first, it->second);
+		return it->second;
+	}
+
+	/*if (functions->find(data) == functions->end()) {
+		printf("\nIn status: {%s}\n", data);
+		//printf("In basic variant\n");
+		return BASIC;
+	}
+	else {
+		printf("in function at: %ld\n", functions->at(data));
+		return functions->at(data);
+	}*/
+}
+
+
+
+Node* CopyBranch(Node* parent, Node* old) {
+	//printf("Copy - %d", old->status);
 	if (old != nullptr) {
-		Node* node = new Node(parent, nullptr, nullptr, old->data);
+		Node* node = new Node(parent, nullptr, nullptr, old->data, old->status);
 
 		node->parent = parent;
 		node->left = CopyBranch(node, old->left);
 		node->right = CopyBranch(node, old->right);
 
 		return node;
-		//Node new_node = *node;          There very beeg mistake
 	}
 	return nullptr;
 }
@@ -131,7 +189,6 @@ void DeleteBranch(Node* node)
 		DeleteBranch(node->left);
 		DeleteBranch(node->right);
 
-		//delete node->data;
 		delete node;
 	}
 }

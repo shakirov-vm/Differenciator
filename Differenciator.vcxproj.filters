@@ -43,5 +43,11 @@
     <Text Include="arifm.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="mult.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="cos.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

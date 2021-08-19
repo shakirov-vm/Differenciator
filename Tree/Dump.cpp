@@ -11,7 +11,7 @@
 
 void Tree::DumpGraph()
 {
-	FILE* potok = file_open("Enter file name, where will be dump graph\n", "w");
+	FILE* potok = FileOpen("Enter file name, where will be dump graph\n", "w");
 	if (potok == nullptr) return;
 
 	fprintf(potok, "digraph G {\n");
@@ -22,12 +22,22 @@ void Tree::DumpGraph()
 	fclose(potok);
 }
 
-void PrintGraph(Node* node, FILE* potok, size_t i)
+void PrintGraph(Node* node, FILE* potok, size_t i) // So slooow
 {
 	if (node->left != nullptr)
 	{
-		fprintf(potok, "\"%d: %s\" -> \"%d: %s\";\n", i, node->data, i + 1, node->left->data);
-		fprintf(potok, "\"%d: %s\" -> \"%d: %s\";\n", i, node->data, i * 32, node->right->data);
+		fprintf(potok, "\"%d: ", i);
+		node->fprint(potok);
+		fprintf(potok, "\" -> \"%d: ", i + 1);
+		node->left->fprint(potok);
+		fprintf(potok, "\";\n");
+
+		fprintf(potok, "\"%d: ", i);
+		node->fprint(potok);
+		fprintf(potok, "\" -> \"%d: ", i * 32);
+		node->right->fprint(potok);
+		fprintf(potok, "\";\n");
+
 		PrintGraph(node->left, potok, i * 2);
 		PrintGraph(node->right, potok, i + 1);
 	}
@@ -35,7 +45,7 @@ void PrintGraph(Node* node, FILE* potok, size_t i)
 
 void Tree::DumpBase()  //          DO text for writing
 {
-	FILE* potok = file_open("Enter file name, where will be dump base\n", "w");
+	FILE* potok = FileOpen("Enter file name, where will be dump base\n", "w");
 	if (potok == nullptr) return;
 
 	int depth = 0;
@@ -55,7 +65,9 @@ void PrintBase(Node* node, FILE* potok, int* depth, int equalizer) //The value o
 			++(*depth);
 		}
 		for (int j = 0; j < (*depth) - 1; j++) fprintf(potok, "\t");
-		fprintf(potok, "$%s$\n", node->data);
+		fprintf(potok, "$");
+		node->fprint(potok);
+		fprintf(potok, "$\n");
 		PrintBase(node->left, potok, depth, 0);
 		PrintBase(node->right, potok, depth, 1);
 		if (equalizer) {
@@ -67,7 +79,7 @@ void PrintBase(Node* node, FILE* potok, int* depth, int equalizer) //The value o
 	}
 }
 
-FILE* file_open(const char* text, const char* mode) {
+FILE* FileOpen(const char* text, const char* mode) {
 	printf(text);
 	char* answer = (char*)calloc(MAX_NAME_SIZE, sizeof(char));
 
