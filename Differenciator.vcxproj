@@ -141,13 +141,12 @@
   <ItemGroup>
     <ClCompile Include="Differenciator\Differenciator.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Tree\Additional.cpp" />
     <ClCompile Include="Tree\Dump.cpp" />
+    <ClCompile Include="Tree\Node.cpp" />
     <ClCompile Include="Tree\Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Differenciator\Differenciator.h" />
-    <ClInclude Include="Tree\Additional.h" />
     <ClInclude Include="Tree\Tree.h" />
   </ItemGroup>
   <ItemGroup>

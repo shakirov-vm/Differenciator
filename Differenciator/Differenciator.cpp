@@ -6,11 +6,6 @@
 #include "../Tree/Tree.h"
 #endif
 
-#ifndef ADDITIONAL_H
-#define ADDITIONAL_H
-#include "../Tree/Additional.h"
-#endif
-
 #ifndef DIFFERENCIATOR_H
 #define DIFFERENCIATOR_H
 #include "Differenciator.h"
@@ -24,9 +19,11 @@ void Differenciator::DumpString() {
 void PrintExpression(class Node* node, FILE* potok) {
     if (node != nullptr)
     {
+        //if(node->left != nullptr) printf("(");
         PrintExpression(node->left, potok);
         if (strcmp(node->data, "null")) printf(" %s ", node->data);
         PrintExpression(node->right, potok);
+        //if(node->left != nullptr) printf(")");
     }
 }
 
@@ -35,17 +32,21 @@ void Differenciator::Differenciate() {
 }
 
 void DifferTree(class Node* node) {
-    if (strcmp(node->data, "x")) {
+    if (!strcmp(node->data, "x")) {
+        printf("x? - %s\n", node->data);
         sprintf(node->data, "1");
     }
-    else if (!atof(node->data)) {  // BAD!
-        sprintf(node->data, "0");
-    }
-    else if (strcmp(node->data, "+")) {
+    else if (!strcmp(node->data, "+")) {
+        printf("+? - %s\n", node->data);
         DifferTree(node->left);
         DifferTree(node->right);
     }
-    else if (strcmp(node->data, "*")) { // need test
+    else if (!atof(node->data)) {  // BAD!
+        printf("num? - %s\n", node->data);
+        sprintf(node->data, "0");
+    }
+    else if (!strcmp(node->data, "*")) { // need test
+        printf("*? - %s\n", node->data);
         char* mult = new char[1];
         sprintf(mult, "*");
 
@@ -75,7 +76,7 @@ void DifferTree(class Node* node) {
         delete[] mult;
         //Вот тут скопировать обе ветки (левую и правую), в потом их дифференцировать
         //Node* left_dif = new Node();
-        //class Node* right_dif = (class Node*)calloc_error(1, sizeof(class Node));
+        //class Node* right_dif = (class Node*)calloc(1, sizeof(class Node));
 
         //left_mult = ChargeNode(node->left, "*", node)
     }

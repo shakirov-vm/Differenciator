@@ -9,11 +9,6 @@
 #include "Tree.h"
 #endif
 
-#ifndef ADDITIONAL_H
-#define ADDITIONAL_H
-#include "Additional.h"
-#endif
-
 void Tree::DumpGraph()
 {
 	FILE* potok = file_open("Enter file name, where will be dump graph\n", "w");
@@ -31,11 +26,22 @@ void PrintGraph(Node* node, FILE* potok, size_t i)
 {
 	if (node->left != nullptr)
 	{
-		fprintf(potok, "\"%d: %s\" -> \"%d: %s\";\n", i, node->data, i * 2, node->left->data);
-		fprintf(potok, "\"%d: %s\" -> \"%d: %s\";\n", i, node->data, i + 1, node->right->data);
+		fprintf(potok, "\"%d: %s\" -> \"%d: %s\";\n", i, node->data, i + 1, node->left->data);
+		fprintf(potok, "\"%d: %s\" -> \"%d: %s\";\n", i, node->data, i * 32, node->right->data);
 		PrintGraph(node->left, potok, i * 2);
 		PrintGraph(node->right, potok, i + 1);
 	}
+}
+
+void Tree::DumpBase()  //          DO text for writing
+{
+	FILE* potok = file_open("Enter file name, where will be dump base\n", "w");
+	if (potok == nullptr) return;
+
+	int depth = 0;
+	PrintBase(root, potok, &depth, 0);
+	fprintf(potok, "}\n");
+	fclose(potok);
 }
 
 void PrintBase(Node* node, FILE* potok, int* depth, int equalizer) //The value of the equalizer is selected so that there are no extra brackets
@@ -61,13 +67,14 @@ void PrintBase(Node* node, FILE* potok, int* depth, int equalizer) //The value o
 	}
 }
 
-void Tree::DumpBase()  //          DO text for writing
-{
-	FILE* potok = file_open("Enter file name, where will be dump base\n", "w");
-	if (potok == nullptr) return;
+FILE* file_open(const char* text, const char* mode) {
+	printf(text);
+	char* answer = (char*)calloc(MAX_NAME_SIZE, sizeof(char));
 
-	int depth = 0;
-	PrintBase(root, potok, &depth, 0);
-	fprintf(potok, "}\n");
-	fclose(potok);
+	fseek(stdin, 0, SEEK_END);
+	std::cin.getline(answer, MAX_NAME_SIZE, '\n');
+
+	FILE* potok = fopen(answer, mode);
+	free(answer);
+	return potok;
 }

@@ -5,12 +5,28 @@
 
 #include <iostream>
 
+enum STATUS {
+	BASIC    = 0,
+	FUNCTION = 1,
+	VARIABLE = 2,
+	NOVALUE  = 3
+};
+
+enum ACTIONS {
+	PLUS   = 1,
+	MINUS  = 2,
+	MULT   = 3,
+	DIVIDE = 4,
+	POW    = 5
+};
+
 class Node {
 public:
 	Node* parent;
 	Node* left;
 	Node* right;
 	char* data;
+	int status;
 
 	Node();
 	~Node();
@@ -21,10 +37,8 @@ public:
 
 class Tree
 {
-public:
-	//protected:
+protected:
 	class Node* root;
-	void Play();
 
 public:
 	Tree();
@@ -33,11 +47,13 @@ public:
 	Tree(const Tree&) = delete;
 
 	void LoadBase();
-	void Game();
 	void DumpBase();
 	void DumpGraph();
 };
 
 void DeleteBranch(Node* node);
 Node* CopyBranch(Node* parent, Node* old);
+
+void PrintBase(Node* node, FILE* potok, int* depth, int equalizer);
 void PrintGraph(Node* node, FILE* potok, size_t i);
+FILE* file_open(const char* text, const char* mode);
