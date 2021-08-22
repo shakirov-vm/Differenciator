@@ -14,7 +14,6 @@
 // File* error
 
 int main() { 
-
     class Differenciator differ;
 
     differ.LoadBase();

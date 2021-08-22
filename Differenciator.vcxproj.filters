@@ -49,5 +49,11 @@
     <Text Include="cos.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="divide.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="pow.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

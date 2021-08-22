@@ -36,15 +36,6 @@ void Tree::LoadBase()
 	functions.insert(std::make_pair("sin", SIN));
 	functions.insert(std::make_pair("log", LOG));
 
-
-	/*our_hash_table::iterator it = functions.begin();
-	while (it != functions.end()) {
-		printf("[%s] - [%d]\n", it->first, it->second);
-		it++;
-	}*/
-
-	//printf("%d - %s\n", functions.find("+")->second, functions.find("+")->first);
-
 	printf("You need load base. Enter name\n");
 	char* base_name = (char*)calloc(100, sizeof(char));
 
@@ -153,21 +144,11 @@ size_t GetStatus(char* data, our_hash_table* functions) { // Is it work right?
 		printf("from my find: {%s} - {%d}\n", it->first, it->second);
 		return it->second;
 	}
-
-	/*if (functions->find(data) == functions->end()) {
-		printf("\nIn status: {%s}\n", data);
-		//printf("In basic variant\n");
-		return BASIC;
-	}
-	else {
-		printf("in function at: %ld\n", functions->at(data));
-		return functions->at(data);
-	}*/
 }
 
 
 
-Node* CopyBranch(Node* parent, Node* old) {
+Node* CopyBranch(Node* parent, Node* old) { // parent->left??
 	//printf("Copy - %d", old->status);
 	if (old != nullptr) {
 		Node* node = new Node(parent, nullptr, nullptr, old->data, old->status);

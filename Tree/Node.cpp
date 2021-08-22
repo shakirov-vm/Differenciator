@@ -24,7 +24,7 @@ Node::Node(Node* parent_, Node* left_, Node* right_, double data_, int status_)
 }
 
 void Node::fprint(FILE* potok) {
-	if (status == BASIC) fprintf(potok, "%lf", data);
+	if (status == BASIC) fprintf(potok, "%.9lg", data);
 	else {
 		switch (status) {
 		case PLUS:

@@ -152,7 +152,9 @@
   <ItemGroup>
     <Text Include="arifm.txt" />
     <Text Include="cos.txt" />
+    <Text Include="divide.txt" />
     <Text Include="mult.txt" />
+    <Text Include="pow.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
